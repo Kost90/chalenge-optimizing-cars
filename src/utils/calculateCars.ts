@@ -1,4 +1,4 @@
-const exitsPeople: number[] = [7, 4, 1];
+const exitsPeople: number[] = [20, 4, 1];
 const availableSeats: number[] = [2, 5, 7, 2];
 
 type IAccumulator = {
@@ -14,7 +14,7 @@ export const calculateNeededCars = (
 
   if (totalPeople === 0) return 0;
 
-  const { carsNeeded } = [...availableSeatsParam]
+  const { carsNeeded, totalSeats } = [...availableSeatsParam]
     .sort((a, b) => b - a)
     .reduce<IAccumulator>(
       (acc, carSeats) => {
@@ -30,9 +30,19 @@ export const calculateNeededCars = (
       { totalSeats: 0, carsNeeded: 0 },
     );
 
+  if (totalPeople > totalSeats) {
+    const unavailableSeats = totalPeople - totalSeats;
+
+    return -unavailableSeats;
+  }
+
   return carsNeeded;
 };
 
 const neededCars = calculateNeededCars(exitsPeople, availableSeats);
 
-console.log('Needed cars:', neededCars);
+if (neededCars < 0) {
+  console.log(`Need more cars with seats: ${neededCars}`);
+} else {
+  console.log('Needed cars:', neededCars);
+}
