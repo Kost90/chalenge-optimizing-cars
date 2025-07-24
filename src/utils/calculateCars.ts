@@ -1,11 +1,6 @@
 const exitsPeople: number[] = [20, 4, 1];
 const availableSeats: number[] = [2, 5, 7, 2];
 
-type IAccumulator = {
-  totalSeats: number;
-  carsNeeded: number;
-};
-
 export const calculateNeededCars = (
   existPeopleParam: number[],
   availableSeatsParam: number[],
@@ -14,26 +9,17 @@ export const calculateNeededCars = (
 
   if (totalPeople === 0) return 0;
 
-  const { carsNeeded, totalSeats } = [...availableSeatsParam]
-    .sort((a, b) => b - a)
-    .reduce<IAccumulator>(
-      (acc, carSeats) => {
-        if (acc.totalSeats >= totalPeople) {
-          return acc;
-        }
+  let totalSeats = 0;
+  let carsNeeded = 0;
 
-        return {
-          totalSeats: acc.totalSeats + carSeats,
-          carsNeeded: acc.carsNeeded + 1,
-        };
-      },
-      { totalSeats: 0, carsNeeded: 0 },
-    );
+  for (const seats of [...availableSeatsParam].sort((a, b) => b - a)) {
+    if (totalSeats >= totalPeople) break;
+    totalSeats += seats;
+    carsNeeded += 1;
+  }
 
-  if (totalPeople > totalSeats) {
-    const unavailableSeats = totalPeople - totalSeats;
-
-    return -unavailableSeats;
+  if (totalSeats < totalPeople) {
+    return totalSeats - totalPeople;
   }
 
   return carsNeeded;

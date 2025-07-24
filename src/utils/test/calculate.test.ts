@@ -18,4 +18,10 @@ describe('calculateNeededCars', () => {
     const seats = [5, 5, 5];
     expect(calculateNeededCars(people, seats)).toBe(0);
   });
+
+  it('should return number less than 0 if there are more people than seats', () => {
+    const people = [10, 10];
+    const seats = [5, 5];
+    expect(calculateNeededCars(people, seats)).toBe(-10);
+  });
 });
