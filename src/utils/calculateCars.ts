@@ -1,10 +1,29 @@
-const exitsPeople: number[] = [20, 4, 1];
-const availableSeats: number[] = [2, 5, 7, 2];
+const exitsPeople: number[] = [20, 4, 2];
+const availableSeats: number[] = [2, 5, 7];
+
+const isNegativeOrDecimalValue = (arr: number[]) => {
+  return arr.some((el) => el < 0 || !Number.isInteger(el));
+};
 
 export const calculateNeededCars = (
   existPeopleParam: number[],
   availableSeatsParam: number[],
-): number => {
+): number | null => {
+  const isExistPeopleParamIsInvalid =
+    isNegativeOrDecimalValue(existPeopleParam);
+  const isavailableSeatsParamInvalid =
+    isNegativeOrDecimalValue(availableSeatsParam);
+
+  if (isExistPeopleParamIsInvalid && isavailableSeatsParamInvalid) {
+    console.error('Some array has negative value');
+    return null;
+  }
+
+  if (existPeopleParam.length !== availableSeatsParam.length) {
+    console.error('Length of arrays is different');
+    return 0;
+  }
+
   const totalPeople = existPeopleParam.reduce((acc, el) => acc + el, 0);
 
   if (totalPeople === 0) return 0;
@@ -27,7 +46,7 @@ export const calculateNeededCars = (
 
 const neededCars = calculateNeededCars(exitsPeople, availableSeats);
 
-if (neededCars < 0) {
+if (neededCars && neededCars < 0) {
   console.log(`Need more cars with seats: ${neededCars}`);
 } else {
   console.log('Needed cars:', neededCars);

@@ -15,7 +15,7 @@ describe('calculateNeededCars', () => {
 
   it('should return 0 if there are no people', () => {
     const people = [0, 0];
-    const seats = [5, 5, 5];
+    const seats = [5, 5];
     expect(calculateNeededCars(people, seats)).toBe(0);
   });
 
